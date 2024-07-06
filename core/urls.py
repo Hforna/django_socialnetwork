@@ -17,10 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from instamain.urls import urlpatterns as home
-from profiles.urls import urlpatterns as url_profiles
+from profiles.urls import urlpatterns as url_profiless
+from accounts.urls import urlpatterns as url_accountss
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include(home)),
-    path("profile", include(url_profiles))
+    path("profile", include(url_profiless)),
+    path("accounts", include(url_accountss))
 ]
