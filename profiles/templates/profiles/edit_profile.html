@@ -1,0 +1,129 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            background: #00aaff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+            top: 10%;
+            left: 0%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 5px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .form-group img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 10px;
+        }
+
+        .form-group input[type="file"] {
+            padding: 0;
+        }
+
+        .btn-submit {
+            background-color: #004080;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            user-select: none;
+            display: block;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background-color: #002e5c;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #0072ff;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    {% include 'instamain/base_header.html' %}
+    <div class="container">
+        <form action="{% url 'edit_profile' request.user %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <img src="/medias/{{ profile.profile_photo }}" alt="Profile Image">
+                <label for="profile_image">Profile Image</label>
+                <input type="file" id="profile_image" name="profile_image">
+            </div>
+            <div class="form-group">
+                <label for="profile_name">Profile Name</label>
+                <input type="text" id="profile_name" name="profile_name" value="{{ profile.profile_name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4">{{ profile.description }}</textarea>
+            </div>
+            <button type="submit" class="btn-submit">Save Changes</button>
+        </form>
+        <a href="{% url 'profile_page' request.user %}" class="back-link">Back to Profile</a>
+    </div>
+    {% include 'instamain/base_footer.html' %}
+</body>
+</html>

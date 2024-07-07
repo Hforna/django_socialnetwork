@@ -1,0 +1,256 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Profile Template</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            background: #00aaff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+            top: 10%;
+            left: 0%;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        .edit_profile, #follow_profile {
+            background-color: #004080;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            user-select: none;
+            margin-top: 10px;
+            position: absolute;
+            top: 18%;
+            left: 2%;
+        }
+
+        .edit_profile:hover, #follow_profile:hover {
+            background-color: #002e5c;
+        }
+
+        .profile-info {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .profile-info h2 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #fff;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #fff;
+        }
+
+        .profile-stats div {
+            text-align: center;
+        }
+
+        .profile-stats div span {
+            display: block;
+            font-size: 20px;
+        }
+
+        .profile-description {
+            margin-top: 50px;
+            color: #fff;
+            position: absolute;
+            top: 20%;
+            left: 1%;
+            max-width: calc(100% - 140px);
+        }
+
+        .post-section {
+            margin-top: 50px;
+        }
+
+        .post-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start;
+            align-items: flex-start;
+            text-align: center;
+        }
+
+        .post {
+            width: calc(33.333% - 20px);
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .post-container .post {
+            margin-top: 60px;
+        }
+
+        .post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .post img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .post-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 10px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .post:hover .post-overlay {
+            opacity: 1;
+        }
+
+        .no-posts-message {
+            color: white;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .addpost {
+            display: block;
+            margin-top: 10px;
+            color: #0072ff;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .addpost:hover {
+            text-decoration: none;
+        }
+
+        .description-icon {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'instamain/base_header.html' %}
+    <div class="container">
+        <div class="profile-header">
+            <img src="/medias/{{ profile.profile_photo }}" alt="Profile Image">
+            {% if request.user == userr_profile %}
+                <a class="edit_profile" href="{% url 'edit_profile' request.user %}">Edit Profile</a>
+            {% else %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" id="follow_profile" name="follow_profile">
+                        {% if not is_following %} 
+                            Follow 
+                        {% else %} 
+                            Unfollow 
+                        {% endif %}
+                    </button>
+                </form>
+            {% endif %}
+            <div class="profile-info">
+                <h2>{{ profile.profile_name }}</h2>
+                <div class="profile-stats">
+                    <div>
+                        <span>{{ profile.posts }}</span>
+                        Posts
+                    </div>
+                    <div>
+                        <span>{{ profile.followers }}</span>
+                        Followers
+                    </div>
+                    <div>
+                        <span>{{ profile.following }}</span>
+                        Following
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="profile-description">
+            &#9432; <p>{{ profile.description }}</p>
+        </div>
+        <div class="post-section">
+            <div class="post-container">
+                {% if posts is not None %}
+                    {% for post in posts %}
+                        <div class="post">
+                            <img src="/medias/{{ post.images }}" alt="Post Image">
+                            <div class="post-overlay">
+                                <span class="likes">{{ post.likes }} likes</span>
+                                <span class="comments">{{ post.comments }} comments</span>
+                                {% if request.user == userr_profile %}
+                                    <a href="{% url 'delete_post' post.id %}">Delete Post</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="no-posts-message">
+                        No Posts Yet
+                        {% if request.user == userr_profile %}
+                            <a class="addpost" href="{% url 'add_post' %}">Add a Post</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% include 'instamain/base_footer.html' %}
+</body>
+</html>

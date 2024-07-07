@@ -1,0 +1,106 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Post</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: #00aaff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+
+        input[type="file"] {
+            background: #fff;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            background: white;
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        button {
+            padding: 10px;
+            background: #0072ff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #005bb5;
+        }
+    </style>
+</head>
+<body>
+    {% include 'instamain/base_header.html' %}
+    <div class="container">
+        <h1>Add a New Post {{request.user}} </h1>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="title">Title</label>
+            <input id="title" name="title" placeholder="Write a title..." required></input>
+
+            <label for="description">description</label>
+            <textarea id="description" name="description" placeholder="Write a description..."></textarea>
+
+            <label for="image">Upload Image</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+
+            <button type="submit">Post</button>
+        </form>
+    </div>
+    {% include 'instamain/base_footer.html' %}
+</body>
+</html>

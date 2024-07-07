@@ -1,6 +1,11 @@
 from django.shortcuts import render
+from .models import Post
 
 # Create your views here.
 
 def home(request):
-    return render(request, 'instamain/home.html', {'name': 'John Doe'})
+    posts = Post.objects.all()
+
+    return render(request, 'instamain/home.html', {'posts': posts})
+
+

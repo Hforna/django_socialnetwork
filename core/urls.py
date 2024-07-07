@@ -19,10 +19,15 @@ from django.urls import path, include
 from instamain.urls import urlpatterns as home
 from profiles.urls import urlpatterns as url_profiless
 from accounts.urls import urlpatterns as url_accountss
+from django.conf.urls.static import static
+import core.settings as settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include(home)),
     path("profile", include(url_profiless)),
-    path("accounts", include(url_accountss))
+    path("accounts", include(url_accountss)),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT )
+

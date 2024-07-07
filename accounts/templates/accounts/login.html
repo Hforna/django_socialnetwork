@@ -19,23 +19,6 @@
             color: #333;
         }
 
-        header {
-            width: 100%;
-            background: #00aaff;
-            padding: 10px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .instagram-logo {
-            margin-left: 20px;
-        }
-
-        .instagram-logo img {
-            height: 40px;
-        }
-
         .login-form {
             max-width: 400px;
             width: 100%;
@@ -126,11 +109,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="instagram-logo">
-            <img src="instagram-logo.png" alt="Instagram Logo">
-        </div>
-    </header>
+    {% include 'instamain/base_header.html' %}
     <div class="login-form">
         {% if messages %}
             {% for message in messages %}

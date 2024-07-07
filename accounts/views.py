@@ -5,6 +5,7 @@ from django.contrib import messages
 from profiles.models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
@@ -32,12 +33,15 @@ def login_page(request):
         userr = authenticate(request, username=uss.username, password=password)
         if userr is not None:
             get_user = User.objects.get(email=email)
-            if not Profile.objects.filter(user_profile=get_user).exists():
-                Profile.objects.create(user_profile=get_user)
-                UserInfos.objects.create(user=get_user)
+            try:
+                Profile.objects.get(user_profile=get_user)
                 login(request, userr)
                 return redirect("/")
-            else:
+            except ObjectDoesNotExist:
+                profile = Profile.objects.create(user_profile=get_user, profile_name=get_user.username)
+                user_infos = UserInfos.objects.create(user=get_user)
+                profile.save()
+                user_infos.save()
                 login(request, userr)
                 return redirect("/")
         else:

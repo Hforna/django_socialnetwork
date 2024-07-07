@@ -10,6 +10,8 @@ class Post(models.Model):
     images = models.ImageField(default="")
     title = models.CharField(max_length=256)
     description = models.CharField(max_length=600, default="")
+    likes = models.IntegerField(default=0)
+    comments = models.IntegerField(default=0)
 
 class Comment(models.Model):
     profile_comment = models.ForeignKey(Profile, on_delete=models.CASCADE)
