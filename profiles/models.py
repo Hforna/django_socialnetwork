@@ -18,6 +18,14 @@ class Profile(models.Model):
     private_account = models.BooleanField(default=False)
     quantity_visits = models.IntegerField(default=0)
 
+
+class FriendShip(models.Model):
+    friend1 = models.ForeignKey(Profile, related_name="friend1", on_delete=models.CASCADE)
+    friend2 = models.ForeignKey(Profile, related_name="friend2" ,on_delete=models.CASCADE)
+
+    def get_friends(self):
+        return f"{self.friend1} now you are a friend of {self.friend2}"
+
 class FollowersPerfil(models.Model):
     follower = models.ForeignKey(Profile, on_delete=models.CASCADE)
     follower_user = models.ForeignKey(User, default=None, on_delete=models.CASCADE)

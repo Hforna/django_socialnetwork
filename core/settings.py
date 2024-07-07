@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'instamain.apps.InstamainConfig',
     'profiles.apps.ProfilesConfig',
-    'accounts.apps.AccountsConfig'
+    'accounts.apps.AccountsConfig',
+    'chat.apps.ChatConfig'
 ]
 
 MIDDLEWARE = [

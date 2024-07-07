@@ -59,11 +59,14 @@
         <a href="{% url 'home' %}"><img alt="Instagram Logo"></img></a>
     </div>
     <div class="search-bar">
-        <input type="text" placeholder="Search">
+        <form id="search-form" action="" method="GET">
+            <input type="text" placeholder="Search" name="search_query" id="search-input">
+            <button type="submit" style="display: none;"></button>
+        </form>
     </div>
     <nav>
         <ul>
-            <li><a href="#">Explore</a></li>
+            <li><a href="{% url 'find_profiles' %}">Explore</a></li>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'profile_page' request.user %}">Profile</a></li>
                 <li><a href="{% url 'logout' %}">Logout</a></li>

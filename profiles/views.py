@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .models import Profile, FollowersPerfil
+from .models import Profile, FollowersPerfil, FriendShip
 from instamain.models import Post
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.datastructures import MultiValueDictKeyError
+from django.views.generic import ListView
 
 
 def profile_page(request, profileuser):
@@ -16,12 +17,12 @@ def profile_page(request, profileuser):
     
     if request.user != userr_profile:
         if "follow_profile" in request.POST:
+            profile_user_following = Profile.objects.get(user_profile=request.user)
             try:
                 user_following = FollowersPerfil.objects.get(follower=profile, follower_user=request.user)
                 user_following.delete()
                 profile.followers -= 1
                 profile.save()
-                profile_user_following = Profile.objects.get(user_profile=request.user)
                 profile_user_following.following -= 1
                 profile_user_following.save()
             except ObjectDoesNotExist:
@@ -29,10 +30,15 @@ def profile_page(request, profileuser):
                 follow.save()
                 profile.followers += 1
                 profile.save()
-                profile_user_following = Profile.objects.get(user_profile=request.user)
                 profile_user_following.following += 1
                 profile_user_following.save()
-            return redirect('profile_page', profileuser=profileuser)  # Redireciona após a operação POST
+            if FollowersPerfil.objects.filter(follower=profile_user_following, follower_user=profile.user_profile).exists():
+                if not FriendShip.objects.filter(friend1=profile_user_following, friend2=profile).exists() or FriendShip.objects.filter(friend1=profile, friend2=profile_user_following).exists():
+                    FriendShip.objects.create(friend1=profile_user_following, friend2=profile)
+                else:
+                    FriendShip.objects.filter(friend1=profile_user_following, friend2=profile).delete()
+
+            return redirect('profile_page', profileuser=profileuser)
 
         profile.quantity_visits += 1
         profile.save()
@@ -87,3 +93,8 @@ def delete_post(request, pk):
         return redirect(f"/profile/{request.user}")
     else:
         return redirect(f"/profile/{post.profile_post.user_profile}")
+
+class ShowProfiles(ListView):
+    model = Profile
+    template_name = "profiles/list_profiles.html"
+    context_object_name = 'profiles'
