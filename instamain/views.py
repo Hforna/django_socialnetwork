@@ -6,6 +6,7 @@ from django.db.models import Q
 
 def home(request):
     posts = Post.objects.all()
+    posts.prefetch_related("profile_post")
     if 'search_query' in request.GET:
         search_query = request.GET["search_query"]
         posts = Post.objects.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))

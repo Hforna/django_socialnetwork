@@ -32,18 +32,8 @@ def login_page(request):
         uss = User.objects.get(email=email)
         userr = authenticate(request, username=uss.username, password=password)
         if userr is not None:
-            get_user = User.objects.get(email=email)
-            try:
-                Profile.objects.get(user_profile=get_user)
-                login(request, userr)
-                return redirect("/")
-            except ObjectDoesNotExist:
-                profile = Profile.objects.create(user_profile=get_user, profile_name=get_user.username)
-                user_infos = UserInfos.objects.create(user=get_user)
-                profile.save()
-                user_infos.save()
-                login(request, userr)
-                return redirect("/")
+            login(request, userr)
+            return redirect("/")
         else:
             messages.error(request, "Email or password is wrong")
 

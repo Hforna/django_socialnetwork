@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from profiles.models import *
+import time
+
 # Create your models here.
 
 
@@ -9,7 +11,7 @@ class Post(models.Model):
     profile_post = models.ForeignKey(Profile, on_delete=models.CASCADE)
     images = models.ImageField(default="")
     title = models.CharField(max_length=256)
-    description = models.CharField(max_length=600, default="")
+    description = models.CharField(max_length=600, default="None")
     likes = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
 
