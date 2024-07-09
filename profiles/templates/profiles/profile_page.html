@@ -183,6 +183,21 @@
             margin-left: 5px;
             font-size: 14px;
         }
+
+        .add_post {
+            background-color: #004080;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            user-select: none;
+            margin-top: 10px;
+            position: absolute;
+            top: 18%;
+            left: 20%;
+        }
     </style>
 </head>
 <body>
@@ -192,6 +207,7 @@
             <img src="/medias/{{ profile.profile_photo }}" alt="Profile Image">
             {% if request.user == userr_profile %}
                 <a class="edit_profile" href="{% url 'edit_profile' request.user %}">Edit Profile</a>
+                <a class="add_post" href="{% url 'add_post' %}">Add a new post</a>
             {% else %}
                 <form action="" method="POST">
                     {% csrf_token %}

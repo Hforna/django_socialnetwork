@@ -92,15 +92,20 @@ class ShowProfiles(ListView):
     template_name = "profiles/list_profiles.html"
     context_object_name = 'profiles'
 
-def friends_page(request):
-    profile_user = Profile.objects.get(user_profile=request.user)
-    friends = FriendShip.objects.filter(Q(friend1=profile_user) | Q(friend2=profile_user))
-    friend_list = []
+class FriendPage(ListView):
+    model = Profile
+    template_name = "profiles/friends_page.html"
+    context_object_name = 'profiles'
 
-    for friendship in friends:
-        if friendship.friend1 != profile_user:
-            friend_list.append(friendship.friend1)
-        else:
-            friend_list.append(friendship.friend2)
+    def get_queryset(self):
+        user_profilee = Profile.objects.get(user_profile=self.request.user)
+        friends = FriendShip.objects.filter(Q(friend1=user_profilee) | Q(friend2=user_profilee))
+        friend_list = []
 
-    return render(request, "profiles/friends_page.html", context={"profiles": friend_list})
+        for friend in friends:
+            if friend.friend1 != user_profilee:
+                friend_list.append(friend.friend1)
+            else:
+                friend_list.append(friend.friend2)
+        return friend_list
+    
