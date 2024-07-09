@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 20px auto;
+            margin-top: 80px;
+            display: flex;
+            flex-direction: column;
+            background: #00aaff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .profile-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start;
+            margin-top: 30px;
+        }
+
+        .profile-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            width: calc(33.333% - 20px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .profile-card h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .profile-card a {
+            text-decoration: none;
+            color: #0072ff;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .profile-card a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: auto;
+            background: #004080;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    {% include 'instamain/base_header.html' %}
+    <div class="container">
+        <h1 style="color: white;">Your friends</h1>
+        <div class="profile-list">
+            {% for profile in profiles %}
+                {% if profile.user_profile != request.user %}
+                    <div class="profile-card">
+                        <img src="/medias/{{ profile.profile_photo }}" alt="{{ profile.profile_name }}">
+                        <h3>{{ profile.profile_name }}</h3>
+                        <a href="{% url 'profile_page' profile.profile_name %}">View Profile</a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% include 'instamain/base_footer.html' %}
+</body>
+</html>

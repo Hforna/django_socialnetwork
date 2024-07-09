@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic import ListView
+from django.db.models import Q
 
 
 def profile_page(request, profileuser):
@@ -83,18 +84,23 @@ def add_post(request):
     return render(request, "profiles/add_post.html")
 
 @csrf_exempt
-def delete_post(request, pk):
-    try:
-        post = Post.objects.get(pk=pk)
-    except ObjectDoesNotExist:
-        return redirect("/")
-    if request.user == post.profile_post.user_profile:
-        post.delete()
-        return redirect(f"/profile/{request.user}")
-    else:
+def delete_post(request, pk): 
         return redirect(f"/profile/{post.profile_post.user_profile}")
 
 class ShowProfiles(ListView):
     model = Profile
     template_name = "profiles/list_profiles.html"
     context_object_name = 'profiles'
+
+def friends_page(request):
+    profile_user = Profile.objects.get(user_profile=request.user)
+    friends = FriendShip.objects.filter(Q(friend1=profile_user) | Q(friend2=profile_user))
+    friend_list = []
+
+    for friendship in friends:
+        if friendship.friend1 != profile_user:
+            friend_list.append(friendship.friend1)
+        else:
+            friend_list.append(friendship.friend2)
+
+    return render(request, "profiles/friends_page.html", context={"profiles": friend_list})
