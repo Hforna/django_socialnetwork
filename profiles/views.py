@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic import ListView
+from django.views.generic.edit import View
 from django.db.models import Q
 
 
@@ -71,6 +72,7 @@ def edit_profile(request, profileuser):
         
     return render(request, "profiles/edit_profile.html", context={"profile": profile})
 
+@login_required(login_url="/accounts/login", redirect_field_name="next")
 def add_post(request):
     profile = Profile.objects.get(user_profile=request.user)
     if request.method == "POST":
@@ -84,8 +86,11 @@ def add_post(request):
     return render(request, "profiles/add_post.html")
 
 @csrf_exempt
-def delete_post(request, pk): 
-        return redirect(f"/profile/{post.profile_post.user_profile}")
+def delete_post(request, pk):
+    post = Post.objects.get(pk=pk)
+    profile = Profile.objects.get(user_profile=request.user)
+    post.delete()
+    return redirect(f"/profile/{profile.user_profile}")
 
 class ShowProfiles(ListView):
     model = Profile

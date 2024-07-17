@@ -40,7 +40,7 @@ def login_page(request):
     
     return render(request, "accounts/login.html")
 
-@login_required
+@login_required(login_url="/accounts/login", redirect_field_name="next")
 def logouts(request):
     logout(request)
     return redirect("/accounts/login")

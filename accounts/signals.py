@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from core import settings
 from profiles.models import Profile, UserInfos
 
+
 User = get_user_model()
 
 @receiver(post_save, sender=User)
