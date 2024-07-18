@@ -97,7 +97,8 @@
         <h1>Add a New Post {{request.user}}</h1>
         {% for field in form %}
         <h1 class="label_field">{{field.label}}</h1>
-        {{ field }} {% endfor %}
+        {{ field }} {{field.error}} 
+        {% endfor %}
         <button type="submit">Submit</button>
       </div>
     </form>

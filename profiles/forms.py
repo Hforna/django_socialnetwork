@@ -1,6 +1,6 @@
 from django import forms
 from instamain.models import Post
-
+from django.core.exceptions import ValidationError
 
 class FormPost(forms.ModelForm):
     class Meta:

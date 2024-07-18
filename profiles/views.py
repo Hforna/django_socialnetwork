@@ -95,9 +95,6 @@ class AddPost(View):
 
         return render(request, "profiles/add_post.html", context={'form': self.form})
 
-def create_post(request):
-    form = FormPost(request.POST, request.FILES)
-
 
 
 @csrf_exempt

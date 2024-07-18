@@ -107,6 +107,14 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
+        .errorfield {
+            color: white;
+        }
+
+        .password2_error {
+            background-color: #f44336;
+        }
     </style>
 </head>
 <body>
@@ -118,27 +126,18 @@
             {% endfor %}
         {% endif %}
         <h2>Sign Up to Instagram</h2>
-        <form action="" method="POST">
+        <form action="{% url 'create_user' %}" method="POST">
             {% csrf_token %}
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="second_password">Repeat Password</label>
-                <input type="password" id="second_password" name="second_password" required>
-            </div>
-            <div class="form-group">
-                <button type="submit">Sign Up</button>
-            </div>
+            {% for field in form %}
+                <h1>{{ field.label }}</h1>
+                {{ field }}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <spam class="{{ field.name }}_error errorfield">{{ error }}</spam>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+            <button type="submit">Submit</button>
         </form>
     </div>
     <script>

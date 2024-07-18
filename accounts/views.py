@@ -1,29 +1,38 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from profiles.models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.views import View
+from .forms import FormUser
+from django.http import Http404
+
 
 # Create your views here.
 
-def sign_up(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        second_password = request.POST.get("second_password")
-        if password == second_password:
-            user_create = User.objects.create_user(username=username, password=password, email=email)
-            user_create.save()
-            messages.success(request, "Account created with success")
-            return redirect("login")
-        else:
-            messages.error(request, "The passwords should be equal")
+class SignUp(View):
+    def get(self, request):
+        get_data_user_form = request.session.get("get_data_form", None)
+        form = FormUser(get_data_user_form)
+        return render(request, "accounts/signup.html", context={'form': form})
+
+
+def create_user(request):
+    if request.method != "POST":
+        return Http404
     
-    return render(request, "accounts/signup.html")
+    form = FormUser(request.POST)
+    request.session["get_data_form"] = request.POST
+    if form.is_valid():
+        post = form.save(commit=False)
+        post.set_password(post.password)
+        post.save()
+        request.session["get_data_form"] = None
+        return redirect("/accounts/login")
+    return redirect("/accounts/signup")
 
 def login_page(request):
     if request.method == "POST":
@@ -42,5 +51,8 @@ def login_page(request):
 
 @login_required(login_url="/accounts/login", redirect_field_name="next")
 def logouts(request):
+    if not request.POST:
+        return Http404
+    
     logout(request)
     return redirect("/accounts/login")
