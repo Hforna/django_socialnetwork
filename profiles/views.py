@@ -7,8 +7,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic import ListView
-from django.views.generic.edit import View
+from django.views.generic import View
 from django.db.models import Q
+from .forms import FormPost
+from django.http import HttpResponse
 
 
 def profile_page(request, profileuser):
@@ -72,18 +74,31 @@ def edit_profile(request, profileuser):
         
     return render(request, "profiles/edit_profile.html", context={"profile": profile})
 
-@login_required(login_url="/accounts/login", redirect_field_name="next")
-def add_post(request):
-    profile = Profile.objects.get(user_profile=request.user)
-    if request.method == "POST":
-        title = request.POST["title"]
-        description = request.POST["description"]
-        images = request.FILES["image"]
-        post = Post.objects.create(profile_post=profile, title=title, description=description, images=images)
-        post.save()
-        return redirect(f"/profile/{profile.profile_name}")
+
+class AddPost(View):
+    form = FormPost()
+    template_name = "profiles/add_post.html"
+
+    def get(self, request):
+        return render(request, "profiles/add_post.html", context={'form': self.form})
     
-    return render(request, "profiles/add_post.html")
+    def post(self, request):
+        profile = Profile.objects.get(user_profile=request.user)
+        form = FormPost(request.POST, request.FILES)
+
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.profile_post = profile
+            post.save()
+
+            return redirect(f"/profile/{profile.user_profile.username}")
+
+        return render(request, "profiles/add_post.html", context={'form': self.form})
+
+def create_post(request):
+    form = FormPost(request.POST, request.FILES)
+
+
 
 @csrf_exempt
 def delete_post(request, pk):

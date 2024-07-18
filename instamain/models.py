@@ -9,9 +9,9 @@ import time
 
 class Post(models.Model):
     profile_post = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    images = models.ImageField(default="")
+    images = models.ImageField(upload_to="medias/", default="")
     title = models.CharField(max_length=256)
-    description = models.CharField(max_length=600, default="None")
+    description = models.CharField(max_length=600, default="")
     likes = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
 
