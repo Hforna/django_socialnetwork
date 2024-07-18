@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -27,9 +28,9 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            position: relative;
+            position: absolute;
             top: 10%;
-
+            left: 30%;
         }
 
         .signup-form h2 {
@@ -80,32 +81,23 @@
         }
         
         .message_success {
-            background-color: #4CAF50; /* Verde */
+            background-color: #4CAF50;
             color: white;
         }
         
         .message_error {
-            background-color: #f44336; /* Vermelho */
+            background-color: #f44336;
             color: white;
         }
         
         .message_info {
-            background-color: #2196F3; /* Azul */
+            background-color: #2196F3;
             color: white;
         }
         
         .message_warning {
-            background-color: #ff9800; /* Laranja */
+            background-color: #ff9800;
             color: white;
-        }
-        
-        .signup-form {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f2f2f2;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .errorfield {
@@ -113,6 +105,10 @@
         }
 
         .password2_error {
+            background-color: #f44336;
+        }
+
+        .email_error {
             background-color: #f44336;
         }
     </style>
@@ -129,13 +125,15 @@
         <form action="{% url 'create_user' %}" method="POST">
             {% csrf_token %}
             {% for field in form %}
-                <h1>{{ field.label }}</h1>
-                {{ field }}
-                {% if field.errors %}
-                    {% for error in field.errors %}
-                        <spam class="{{ field.name }}_error errorfield">{{ error }}</spam>
-                    {% endfor %}
-                {% endif %}
+                <div class="form-group">
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <span class="{{ field.name }}_error errorfield">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
             {% endfor %}
             <button type="submit">Submit</button>
         </form>
