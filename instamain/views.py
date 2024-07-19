@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Post, ListLikesPost, Comment
 from django.db.models import Q
 from profiles.models import Profile
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -16,6 +17,7 @@ def home(request):
 
     return render(request, 'instamain/home.html', context=context)
 
+@csrf_exempt
 def see_post(request, pk):
     post = Post.objects.get(pk=pk)
     user_seeing = Profile.objects.get(user_profile=request.user)

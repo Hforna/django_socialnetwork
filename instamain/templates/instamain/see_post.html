@@ -28,6 +28,7 @@
             align-items: center;
             flex-grow: 1;
             width: 100%;
+            margin-top: 60px;
         }
 
         .post {
@@ -57,15 +58,22 @@
             font-size: 14px;
             display: flex;
             justify-content: space-between;
-            border-radius: 10px 10px 10px 10px;
         }
 
         .post-description {
+            background-color: rgba(0, 0, 0, 0.5);
             padding: 10px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-top: none;
-            border-radius: 0 0 10px 10px;
+            color: #fff;
+        }
+
+        .post-description p {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .post-description strong {
+            display: block;
+            margin-bottom: 10px;
         }
 
         .comments-section {
@@ -73,7 +81,7 @@
             padding: 10px;
             background: #f9f9f9;
             border: 1px solid #ddd;
-            border-radius: 0 0 10px 10px;
+            border-radius: 0 0 0 0;
         }
 
         .comment {
@@ -82,6 +90,8 @@
 
         .comment p {
             margin-bottom: 5px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .comment-form {
@@ -174,6 +184,7 @@
                 <span class="comments">{{ post.comments }} comments</span>
             </div>
             <div class="post-description">
+                <strong>{{post.title}}</strong>
                 <p>{{ post.description }}</p>
             </div>
             <div class="comments-section">
