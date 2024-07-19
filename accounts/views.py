@@ -37,6 +37,7 @@ def create_user(request):
         post.save()
         request.session["get_data_form"] = None
         request.session["before_in_create_page"] = False
+        messages.success(request, "Account created with success")
         return redirect("/accounts/login")
     return redirect("/accounts/signup")
 
@@ -58,4 +59,5 @@ def login_page(request):
 @login_required(login_url="/accounts/login", redirect_field_name="next")
 def logouts(request):
     logout(request)
+    request.session["anonymous"] = True
     return redirect("/accounts/login")

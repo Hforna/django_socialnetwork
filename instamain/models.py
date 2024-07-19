@@ -8,12 +8,16 @@ import time
 
 
 class Post(models.Model):
-    profile_post = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile_post = models.ForeignKey(Profile, related_name="user_post", on_delete=models.CASCADE)
     images = models.ImageField(upload_to="medias/", default="")
     title = models.CharField(max_length=256)
     description = models.CharField(max_length=600, default="")
     likes = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
+
+class ListLikesPost(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    profile_liked = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
 class Comment(models.Model):
     profile_comment = models.ForeignKey(Profile, on_delete=models.CASCADE)

@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import *
 
+
 urlpatterns = [
     path("/<str:profileuser>", profile_page, name="profile_page"),
     path("/posts_profile/add_post", AddPost.as_view(), name="add_post"),
