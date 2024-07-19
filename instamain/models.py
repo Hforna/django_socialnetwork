@@ -23,7 +23,6 @@ class Comment(models.Model):
     profile_comment = models.ForeignKey(Profile, on_delete=models.CASCADE)
     post_commented = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment = models.CharField(max_length=600)
-    likes = models.IntegerField(default=0)
 
 class ReplyComment(models.Model):
     profile_comment = models.ForeignKey(Profile, on_delete=models.CASCADE)
