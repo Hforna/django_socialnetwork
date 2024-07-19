@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Post</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -52,10 +53,11 @@
             background-color: rgba(0, 0, 0, 0.5);
             color: #fff;
             padding: 10px;
+            margin-top: 2px;
             font-size: 14px;
             display: flex;
             justify-content: space-between;
-            border-radius: 0 0 10px 10px;
+            border-radius: 10px 10px 10px 10px;
         }
 
         .post-description {
@@ -142,17 +144,33 @@
         footer p {
             font-size: 12px;
         }
+
+        .like-button {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            gap: 5px;
+        }
     </style>
 </head>
 <body>
-
     {% include 'instamain/base_header.html' %}
-
     <div class="post-container">
         <div class="post">
             <img src="/medias/{{ post.images }}" alt="Post Image">
             <div class="post-overlay">
-                <span class="likes">{{ post.likes }} likes</span>
+                <form action="" method="POST" id="like_post" name="like_post">
+                    {% csrf_token %}
+                    <input type="hidden" name="like_post" value="true">
+                    <div class="like-button" data-post-id="{{ post.id }}">
+                        <span class="likes">{{ post.likes }} likes</span>
+                        {% if liked %}
+                            <i class="fa fa-heart" id="like-icon" style="color: #ff0000;"></i>
+                        {% else %}
+                            <i class="fa fa-heart" id="like-icon" style="color: white;"></i>
+                        {% endif %}
+                    </div>
+                </form>
                 <span class="comments">{{ post.comments }} comments</span>
             </div>
             <div class="post-description">
@@ -174,7 +192,14 @@
             </form>
         </div>
     </div>
-
     {% include 'instamain/base_footer.html' %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('like-icon').addEventListener('click', function() {
+                event.preventDefault();
+                document.getElementById('like_post').submit();
+            })
+        })
+    </script>
 </body>
 </html>

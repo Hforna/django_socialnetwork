@@ -44,12 +44,13 @@
             background-color: rgba(0, 0, 0, 0.5);
             color: #fff;
             padding: 10px;
+            margin-top: 2px;
             font-size: 14px;
             opacity: 0;
             transition: opacity 0.3s ease;
             display: flex;
             justify-content: space-between;
-            border-radius: 0 0 10px 10px;
+            border-radius: 10px 10px 10px 10px;
         }
 
         .post:hover .post-overlay {
@@ -87,7 +88,7 @@
 
     {% for post in posts %}
         <div class="post">
-            <img src="/medias/{{ post.images }}" alt="Post Image">
+            <a href="{% url 'see_post' post.id %}"><img src="/medias/{{ post.images }}" alt="Post Image"></a>
             <div class="post-overlay">
                 <span class="likes">{{ post.likes }} likes</span>
                 <span class="comments">{{ post.comments }} comments</span>
@@ -96,11 +97,11 @@
                 <p>{{ post.description }}</p>
             </div>
             <div class="comments-section">
-                {% if comments%}
+                {% if comments %}
                     {% for comment in comments %}
                         {% if comment.post_commented.id == post.id %}
                             <div class="comment">
-                                <p><strong>{{ comment.profile_commented }}</strong> {{ comment.comment }}</p>
+                                <p><strong>{{ comment.profile_comment.profile_name }}</strong> {{ comment.comment }}</p>
                             </div>
                         {% endif %}
                     {% endfor %}

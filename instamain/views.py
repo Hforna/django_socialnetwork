@@ -22,22 +22,34 @@ def see_post(request, pk):
     list_comments = []
     if Comment.objects.filter(post_commented=post).exists():
         for comment in Comment.objects.filter(post_commented=post):
-            list_comments.append(comment) 
+            list_comments.append(comment)
 
-    context = {'post': post, 'list_comments': list_comments}
+    liked = ListLikesPost.objects.filter(profile_liked=user_seeing, post=post).exists()
     if "like_post" in request.POST:
         if ListLikesPost.objects.filter(profile_liked=user_seeing, post=post).exists():
             post.likes -= 1
+            post.save()
             ListLikesPost.objects.filter(profile_liked=user_seeing, post=post).first().delete()
+            return redirect(f"/post/{pk}")
         else:
-            post.liked += 1
-            liked = ListLikesPost.objects.create(profile_liked=user_seeing, post=post)
-            liked.save()
+            liked = True
+            post.likes += 1
+            post.save()
+            likes = ListLikesPost.objects.create(profile_liked=user_seeing, post=post)
+            likes.save()
+            return redirect(f"/post/{pk}")
     elif "comment_in_post" in request.POST:
         comment = request.POST["comment"]
         cr_comment = Comment.objects.create(profile_comment=user_seeing, post_commented=post, comment=comment)
         cr_comment.save()
         post.comments += 1
+        post.save()
         return redirect(f"/post/{pk}")
+    
+    context = {
+        'post': post,
+        'list_comments': list_comments,
+        'liked': liked,
+    }
     
     return render(request, "instamain/see_post.html", context=context)
