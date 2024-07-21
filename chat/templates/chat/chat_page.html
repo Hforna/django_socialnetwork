@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .footer {
+            background: #007bff;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .chat-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            padding-bottom: 60px; /* Para evitar sobreposição do footer */
+        }
+
+        .chat-window {
+            width: 60%;
+            max-width: 800px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            border-bottom: 1px solid #eee;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 70%;
+            clear: both;
+        }
+
+        .chat-message.friend {
+            background: #e1ffc7;
+            float: left;
+        }
+
+        .chat-message.user {
+            background: #c7e1ff;
+            float: right;
+        }
+
+        .chat-input-container {
+            display: flex;
+            border-top: 1px solid #eee;
+        }
+
+        #chat-input {
+            flex: 1;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        #chat-input:focus {
+            outline: none;
+        }
+
+        button[type="submit"] {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    {% include 'instamain/base_header.html' %}
+    <div class="chat-container">
+        <div class="chat-window">
+            <div id="chat-messages" class="chat-messages">
+                <div class="chat-message friend">Olá! Como você está?</div>
+                <div class="chat-message user">Estou bem, obrigado! E você?</div>
+            </div>
+            <div class="chat-input-container">
+                <form id="chat-form" action="" method="post">
+                    {% csrf_token %}
+                    <input type="text" id="chat-input" name="message" placeholder="Digite sua mensagem..." required>
+                    <button type="submit">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% include 'instamain/base_footer.html' %}
+
+    <script>
+        document.getElementById('chat-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const input = document.getElementById('chat-input');
+            const message = input.value;
+
+            fetch("", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: new URLSearchParams({ 'message': message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'Message sent') {
+                    const chatMessages = document.getElementById('chat-messages');
+                    const newMessage = document.createElement('div');
+                    newMessage.textContent = message;
+                    newMessage.classList.add('chat-message', 'user');
+                    chatMessages.appendChild(newMessage);
+                    input.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
