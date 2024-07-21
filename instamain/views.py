@@ -3,6 +3,7 @@ from .models import Post, ListLikesPost, Comment
 from django.db.models import Q
 from profiles.models import Profile
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -18,6 +19,7 @@ def home(request):
     return render(request, 'instamain/home.html', context=context)
 
 @csrf_exempt
+@login_required
 def see_post(request, pk):
     post = Post.objects.get(pk=pk)
     user_seeing = Profile.objects.get(user_profile=request.user)

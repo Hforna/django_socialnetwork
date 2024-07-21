@@ -103,6 +103,8 @@ class AddPost(View):
         form = FormPost(request.POST, request.FILES)
 
         if form.is_valid():
+            profile.posts += 1
+            profile.save()
             post = form.save(commit=False)
             post.profile_post = profile
             post.save()
@@ -117,6 +119,8 @@ class AddPost(View):
 def delete_post(request, pk):
     post = Post.objects.get(pk=pk)
     profile = Profile.objects.get(user_profile=request.user)
+    profile.posts -= 1
+    profile.save()
     post.delete()
     return redirect(f"/profile/{profile.user_profile}")
 

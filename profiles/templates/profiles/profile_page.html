@@ -238,15 +238,17 @@
                 </div>
             </div>
         </div>
-        <div class="profile-description">
-            &#9432; <p>{{ profile.description }}</p>
-        </div>
+        {% if profile.description %}
+            <div class="profile-description">
+                &#9432; <p>{{ profile.description }}</p>
+            </div>
+        {% endif %}
         <div class="post-section">
             <div class="post-container">
                 {% if posts is not None %}
                     {% for post in posts %}
                         <div class="post">
-                            <img src="/medias/{{ post.images }}" alt="Post Image">
+                            <a href="{% url 'see_post' post.id %}"><img src="/medias/{{ post.images }}" alt="Post Image"></a>
                             <div class="post-overlay">
                                 <span class="likes">{{ post.likes }} likes</span>
                                 <span class="comments">{{ post.comments }} comments</span>
