@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'instamain.apps.InstamainConfig',
     'profiles.apps.ProfilesConfig',
     'accounts.apps.AccountsConfig',
-    'chat.apps.ChatConfig'
+    'chat.apps.ChatConfig',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
