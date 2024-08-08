@@ -52,8 +52,7 @@ def login_page(request):
         if request.method == "POST":
             email = request.POST["email"]
             password = request.POST["password"]
-            uss = User.objects.get(email=email)
-            userr = authenticate(request, username=uss.username, password=password)
+            userr = authenticate(request, email=email, password=password)
             if userr is not None:
                 login(request, userr)
                 return redirect("/")
