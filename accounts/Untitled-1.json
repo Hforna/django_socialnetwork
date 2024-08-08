@@ -1,0 +1,22 @@
+{
+	"profile_post": 4,
+	"title": "teste api",
+	"description": "teste de descricao para api"
+}
+
+
+{
+	"refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyMjk5NDM5OSwiaWF0IjoxNzIyOTA3OTk5LCJqdGkiOiJmODQxZmQzYmQ4ZWU0MTU0YWJmN2ExY2UwOWFlNTAyMCIsInVzZXJfaWQiOjQ3fQ.Hartoy4L54NPoS6jhQADpmDCq7uyiS67THO0plkRWbo",
+	"access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIyOTA4Mjk5LCJpYXQiOjE3MjI5MDc5OTksImp0aSI6ImNlMWI3NWFjYjg0YjRiNDdiZWQ3NjMyNzU1ODUxZDEyIiwidXNlcl9pZCI6NDd9.mNF7o3TVqJjJO4RYghFQWPXnF1G3TGFVEYmxH93S_4E"
+}
+
+
+
+{
+	"profile_post": "6",
+	"title": "teste token",
+	"description": "asdasd",
+	"profiles": "http://127.0.0.1:8000/accounts/api/profiles/6/"
+}
+
+
